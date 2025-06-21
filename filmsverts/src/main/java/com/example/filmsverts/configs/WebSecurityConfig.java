@@ -38,23 +38,23 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain userSecurityFilterChain(HttpSecurity http) throws Exception {
         http
-        .securityMatcher("/user/**", "/user-login", "/user-register", "/process-user-login", "/user-profile")
+        .securityMatcher("/user/**", "/user/login", "/user/register", "/process-user-login", "/user/profile")
         .csrf(csrf -> csrf.disable())
         .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/user-login", "/user-register", "/process-user-login", "/css/**", "/js/**").permitAll()
-            .requestMatchers("/user/**", "/user-profile").hasRole("USER")
+            .requestMatchers("/user/login", "/user/register", "/process-user-login", "/css/**", "/js/**").permitAll()
+            .requestMatchers("/user/**", "/user/profile").hasRole("USER")
             .anyRequest().authenticated()
         )
         .formLogin(login -> login
-            .loginPage("/user-login")
+            .loginPage("/user/login")
             .loginProcessingUrl("/process-user-login")
-            .defaultSuccessUrl("/user/dashboard", true)  // Sửa thành đường dẫn /user/profile thay vì /user-profile
-            .failureUrl("/user-login?error=true")
+            .defaultSuccessUrl("/user/profile", true)  // Sửa thành đường dẫn /user/profile thay vì /user-profile
+            .failureUrl("/user/login?error=true")
             .permitAll()
         )
         .logout(logout -> logout
             .logoutUrl("/user/logout")
-            .logoutSuccessUrl("/user-login?logout=true")
+            .logoutSuccessUrl("/user/login?logout=true")
             .permitAll()
         )
         .authenticationProvider(userAuthenticationProvider());
