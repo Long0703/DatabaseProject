@@ -1,115 +1,204 @@
 package com.example.filmsverts.entities;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "\"Movie\"")
 public class Movie {
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
-	@Column(name = "\"MovieID\"", nullable = false)
-	private Long movieID;
-	
-	@Column(name = "\"Title\"", nullable = false, length = 256)
-	private String title;
-	
-	@Column(name = "\"PublishYear\"", nullable = true)
-	private Integer publishyear;
-	
-	@Column(name = "\"Description\"", nullable = true)
-	private String description;
-	
-	@Column(name = "\"Trailer\"", nullable = true)
-	private String trailer;
-	
-	@Column(name = "\"Poster\"", nullable = true)
-	private String poster;
-	
-	@Column(name = "\"GenreID\"", nullable = true)
-	private Long genreID;
-	
-	@Column(name = "\"DirectorID\"", nullable = true)
-	private Long DirectorID;
-	
-	@Column(name = "\"AvgRatio\"", nullable = false)
-	private BigDecimal avg = BigDecimal.ZERO;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Sử dụng IDENTITY thay vì SEQUENCE
+    @Column(name = "\"MovieID\"", nullable = false)
+    private Integer movieID; // Thay đổi từ Long sang Integer để khớp với database
 
-	public Long getMovieID() {
-		return movieID;
-	}
+    @Column(name = "\"Title\"", nullable = false, length = 256)
+    private String title;
 
-	public void setMovieID(Long movieID) {
-		this.movieID = movieID;
-	}
+    @Column(name = "\"PublishYear\"", nullable = true)
+    private Integer publishYear; // Sửa tên từ publishyear thành publishYear
 
-	public String getTitle() {
-		return title;
-	}
+    @Column(name = "\"Description\"", nullable = true, columnDefinition = "TEXT")
+    private String description;
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    @Column(name = "\"Trailer\"", nullable = true, columnDefinition = "TEXT")
+    private String trailer;
 
-	public Integer getPublishyear() {
-		return publishyear;
-	}
+    @Column(name = "\"Poster\"", nullable = true, columnDefinition = "TEXT")
+    private String poster;
 
-	public void setPublishyear(Integer publishyear) {
-		this.publishyear = publishyear;
-	}
+    @Column(name = "\"AvgRatio\"", nullable = false, precision = 2, scale = 1)
+    private BigDecimal avgRatio = BigDecimal.ZERO; // Đổi tên từ avg thành avgRatio
 
-	public String getDescription() {
-		return description;
-	}
+    // Quan hệ với Genre
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "\"GenreID\"", nullable = true)
+    private Genre genre;
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    // Quan hệ với Director
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "\"DirectorID\"", nullable = true)
+    private Director director;
 
-	public String getTrailer() {
-		return trailer;
-	}
+    // Quan hệ ngược với các entity khác (Optional)
+    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Act> acts = new ArrayList<>();
 
-	public void setTrailer(String trailer) {
-		this.trailer = trailer;
-	}
+    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Rate> rates = new ArrayList<>();
 
-	public String getPoster() {
-		return poster;
-	}
+    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Comment> comments = new ArrayList<>();
 
-	public void setPoster(String poster) {
-		this.poster = poster;
-	}
+    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<EditInfo> editInfos = new ArrayList<>();
 
-	public Long getGenreID() {
-		return genreID;
-	}
+    // Constructors
+    public Movie() {}
 
-	public void setGenreID(Long genreID) {
-		this.genreID = genreID;
-	}
+    public Movie(String title, Integer publishYear, String description, String trailer, String poster) {
+        this.title = title;
+        this.publishYear = publishYear;
+        this.description = description;
+        this.trailer = trailer;
+        this.poster = poster;
+    }
 
-	public Long getDirectorID() {
-		return DirectorID;
-	}
+    // Getters and Setters
+    public Integer getMovieID() {
+        return movieID;
+    }
 
-	public void setDirectorID(Long directorID) {
-		DirectorID = directorID;
-	}
+    public void setMovieID(Integer movieID) {
+        this.movieID = movieID;
+    }
 
-	public BigDecimal getAvg() {
-		return avg;
-	}
+    public String getTitle() {
+        return title;
+    }
 
-	public void setAvg(BigDecimal avg) {
-		this.avg = avg;
-	}
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public Integer getPublishYear() {
+        return publishYear;
+    }
+
+    public void setPublishYear(Integer publishYear) {
+        this.publishYear = publishYear;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getTrailer() {
+        return trailer;
+    }
+
+    public void setTrailer(String trailer) {
+        this.trailer = trailer;
+    }
+
+    public String getPoster() {
+        return poster;
+    }
+
+    public void setPoster(String poster) {
+        this.poster = poster;
+    }
+
+    public BigDecimal getAvgRatio() {
+        return avgRatio;
+    }
+
+    public void setAvgRatio(BigDecimal avgRatio) {
+        this.avgRatio = avgRatio;
+    }
+
+    public Genre getGenre() {
+        return genre;
+    }
+
+    public void setGenre(Genre genre) {
+        this.genre = genre;
+    }
+
+    public Director getDirector() {
+        return director;
+    }
+
+    public void setDirector(Director director) {
+        this.director = director;
+    }
+
+    public List<Act> getActs() {
+        return acts;
+    }
+
+    public void setActs(List<Act> acts) {
+        this.acts = acts;
+    }
+
+    public List<Rate> getRates() {
+        return rates;
+    }
+
+    public void setRates(List<Rate> rates) {
+        this.rates = rates;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public List<EditInfo> getEditInfos() {
+        return editInfos;
+    }
+
+    public void setEditInfos(List<EditInfo> editInfos) {
+        this.editInfos = editInfos;
+    }
+
+    // Utility methods
+    public void addAct(Act act) {
+        acts.add(act);
+        act.setMovie(this);
+    }
+
+    public void removeAct(Act act) {
+        acts.remove(act);
+        act.setMovie(null);
+    }
+
+    public void addRate(Rate rate) {
+        rates.add(rate);
+        rate.setMovie(this);
+    }
+
+    public void removeRate(Rate rate) {
+        rates.remove(rate);
+        rate.setMovie(null);
+    }
+
+    public void addComment(Comment comment) {
+        comments.add(comment);
+        comment.setMovie(this);
+    }
+
+    public void removeComment(Comment comment) {
+        comments.remove(comment);
+        comment.setMovie(null);
+    }
 }

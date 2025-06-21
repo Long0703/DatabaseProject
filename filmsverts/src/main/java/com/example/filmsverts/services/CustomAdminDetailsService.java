@@ -32,7 +32,7 @@ public class CustomAdminDetailsService implements UserDetailsService {
         }
 
         return User.builder()
-                .username(admin.getAdminsID().toString()) // Dùng ID làm username
+                .username(admin.getAdminID().toString()) // Dùng ID làm username
                 .password(admin.getPassword()) // Password đã mã hóa
                 .roles("ADMIN")
                 .build();
