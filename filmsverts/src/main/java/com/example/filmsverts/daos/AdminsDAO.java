@@ -21,4 +21,13 @@ public class AdminsDAO {
 		return (Admins) query.getSingleResult();
 	}
 
+	public Admins save(Admins admin) {
+		if (admin.getAdminsID() == null) {
+			entityManager.persist(admin);
+			return admin;
+		} else {
+			return entityManager.merge(admin);
+		}
+	}
+
 }

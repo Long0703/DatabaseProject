@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Text?>
+
+<VBox alignment="CENTER" spacing="15" style="-fx-background-color: #f0f0f0;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.filmsverts.ui.RegisterController">
+   <padding>
+      <Insets top="20" right="20" bottom="20" left="20"/>
+   </padding>
+   <Text text="Đăng ký tài khoản mới" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+   <HBox spacing="10" alignment="CENTER">
+      <RadioButton fx:id="userRadio" text="User" selected="true"/>
+      <RadioButton fx:id="adminRadio" text="Admin"/>
+   </HBox>
+   <VBox spacing="8" maxWidth="300">
+      <Label text="Tên đăng nhập (User):"/>
+      <TextField fx:id="usernameField" promptText="Chỉ cho User"/>
+      <Label text="Mật khẩu:"/>
+      <PasswordField fx:id="passwordField" promptText="Nhập mật khẩu"/>
+      <Label text="Email:"/>
+      <TextField fx:id="emailField" promptText="Nhập email"/>
+      <Label text="Họ:"/>
+      <TextField fx:id="firstnameField" promptText="Nhập họ"/>
+      <Label text="Tên:"/>
+      <TextField fx:id="lastnameField" promptText="Nhập tên"/>
+      <Label text="Số điện thoại:"/>
+      <TextField fx:id="phonenumberField" promptText="Nhập số điện thoại"/>
+      <Label text="Ngày sinh (yyyy-MM-dd):"/>
+      <TextField fx:id="dateofbirthField" promptText="2020-01-01"/>
+      <Button fx:id="registerButton" text="Đăng ký" onAction="#handleRegister" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;"/>
+      <Label fx:id="messageLabel" text="" style="-fx-text-fill: red;"/>
+   </VBox>
+</VBox> 

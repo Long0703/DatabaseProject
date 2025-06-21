@@ -29,4 +29,13 @@ public class UsersDAO {
         }
 	}
 
+	public Users save(Users user) {
+		if (user.getUsername() != null && entityManager.find(Users.class, user.getUsername()) == null) {
+			entityManager.persist(user);
+			return user;
+		} else {
+			return entityManager.merge(user);
+		}
+	}
+
 }
