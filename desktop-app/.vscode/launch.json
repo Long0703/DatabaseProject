@@ -1,0 +1,12 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Run Filmsverts Desktop App",
+            "request": "launch",
+            "mainClass": "com.filmsverts.Launcher",
+            "projectName": "filmsverts-desktop"
+        }
+    ]
+} 

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Text?>
+
+<VBox alignment="CENTER" spacing="20" style="-fx-background-color: #f0f0f0;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.filmsverts.ui.LoginController">
+   <padding>
+      <Insets top="20" right="20" bottom="20" left="20"/>
+   </padding>
+   
+   <Text text="Filmsverts" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+   <Text text="Đăng nhập" style="-fx-font-size: 18px;"/>
+   
+   <VBox spacing="10" maxWidth="250">
+      <Label text="Tài khoản:"/>
+      <TextField fx:id="usernameField" promptText="Nhập username"/>
+      
+      <Label text="Mật khẩu:"/>
+      <PasswordField fx:id="passwordField" promptText="Nhập password"/>
+      
+      <HBox spacing="10" alignment="CENTER">
+         <RadioButton fx:id="userRadio" text="User" selected="true"/>
+         <RadioButton fx:id="adminRadio" text="Admin"/>
+      </HBox>
+      
+      <Button fx:id="loginButton" text="Đăng nhập" onAction="#handleLogin" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;"/>
+      <Button fx:id="registerButton" text="Đăng ký" onAction="#handleRegister" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-weight: bold;"/>
+      
+      <Label fx:id="messageLabel" text="" style="-fx-text-fill: red;"/>
+   </VBox>
+</VBox> 
