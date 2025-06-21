@@ -21,11 +21,4 @@ public class AdminsDAO {
 		return (Admins) query.getSingleResult();
 	}
 
-	public Admins findByUsername(String username) {
-		String sql = "Select e from " + Admins.class.getName()
-				+ " e where e.username =: username";
-		Query query = entityManager.createQuery(sql, Admins.class);
-		query.setParameter("username", username);
-		return (Admins) query.getSingleResult();
-	}
 }
