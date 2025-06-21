@@ -22,7 +22,7 @@ public class AdminsDAO {
 	}
 
 	public Admins save(Admins admin) {
-		if (admin.getAdminsID() == null) {
+		if (admin.getAdminID() == null) {
 			entityManager.persist(admin);
 			return admin;
 		} else {

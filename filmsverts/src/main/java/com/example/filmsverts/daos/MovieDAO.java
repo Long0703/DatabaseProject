@@ -13,7 +13,8 @@ public class MovieDAO {
     @Autowired
     private EntityManager entityManager;
     
-    public List<Movie> findAll() {
+    @SuppressWarnings("unchecked")
+	public List<Movie> findAll() {
         String sql = "Select e from " + Movie.class.getName() + " e";
         Query query = entityManager.createQuery(sql, Movie.class);
         return query.getResultList();

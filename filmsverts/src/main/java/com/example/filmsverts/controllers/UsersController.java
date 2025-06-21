@@ -90,22 +90,22 @@ public class UsersController {
                 Admins admin = new Admins();
                 admin.setPassword(payload.get("password").toString());
                 admin.setEmail(payload.get("email").toString());
-                admin.setFirstname(payload.get("firstname").toString());
-                admin.setLastname(payload.get("lastname").toString());
-                admin.setPhonenumber(payload.get("phonenumber").toString());
-                admin.setDateofbirth(java.time.LocalDate.parse(payload.get("dateofbirth").toString()));
+                admin.setFirstName(payload.get("firstname").toString());
+                admin.setLastName(payload.get("lastname").toString());
+                admin.setPhoneNumber(payload.get("phonenumber").toString());
+                admin.setDateOfBirth(java.time.LocalDate.parse(payload.get("dateofbirth").toString()));
                 Admins saved = adminsDAO.save(admin);
-                return ResponseEntity.ok(Map.of("success", true, "adminID", saved.getAdminsID()));
+                return ResponseEntity.ok(Map.of("success", true, "adminID", saved.getAdminID()));
             } else {
                 // Đăng ký User
                 Users user = new Users();
                 user.setUsername(payload.get("username").toString());
                 user.setPassword(payload.get("password").toString());
                 user.setEmail(payload.get("email").toString());
-                user.setFirstname(payload.get("firstname").toString());
-                user.setLastname(payload.get("lastname").toString());
-                user.setPhonenumber(payload.get("phonenumber").toString());
-                user.setDateofbirth(java.time.LocalDate.parse(payload.get("dateofbirth").toString()));
+                user.setFirstName(payload.get("firstname").toString());
+                user.setLastName(payload.get("lastname").toString());
+                user.setPhoneNumber(payload.get("phonenumber").toString());
+                user.setDateOfBirth(java.time.LocalDate.parse(payload.get("dateofbirth").toString()));
                 Users saved = usersDAO.save(user);
                 return ResponseEntity.ok(Map.of("success", true, "username", saved.getUsername()));
             }
