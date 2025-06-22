@@ -13,11 +13,11 @@ public class AdminsDAO {
 	@Autowired
 	private EntityManager entityManager;
 	
-	public Admins findByID(Long adminID) {
+	public Admins findByID(Integer adminID) {
 		String sql = "Select e from " + Admins.class.getName()
-				+ " e where e.AdminID =: adminID";
+				+ " e where e.adminID =: adminID";
 		Query query = entityManager.createQuery(sql, Admins.class);
-		query.setParameter("AdminID", adminID);
+		query.setParameter("adminID", adminID);
 		return (Admins) query.getSingleResult();
 	}
 
@@ -28,6 +28,13 @@ public class AdminsDAO {
 		} else {
 			return entityManager.merge(admin);
 		}
+	}
+
+	public boolean existedAdmin(Integer adminID) {
+		String queryStr = "SELECT COUNT(a) FROM Admins a WHERE AdminID = ?1";
+		Query query = entityManager.createQuery(queryStr).setParameter(1, adminID);
+		Long count = (Long) query.getSingleResult();
+		return count > 0;
 	}
 
 }

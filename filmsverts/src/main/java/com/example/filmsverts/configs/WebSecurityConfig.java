@@ -64,23 +64,23 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain adminSecurityFilterChain(HttpSecurity http) throws Exception {
         http
-        .securityMatcher("/admin/**", "/admin-login", "/admin-register", "/process-admin-login", "/admin-profile")
+        .securityMatcher("/admin/**", "/admin/login", "/process-admin-login", "/admin/profile")
         .csrf(csrf -> csrf.disable())
         .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/admin-login", "/admin-register", "/process-admin-login", "/css/**", "/js/**").permitAll()
+            .requestMatchers("/admin/login", "/process-admin-login", "/css/**", "/js/**").permitAll()
             .requestMatchers("/admin/**", "/admin/profile", "/admin/dashboard").hasRole("ADMIN")
             .anyRequest().authenticated()
         )
         .formLogin(login -> login
-            .loginPage("/admin-login")
+            .loginPage("/admin/login")
             .loginProcessingUrl("/process-admin-login")
-            .defaultSuccessUrl("/admin/dashboard", true)  // Sửa thành đường dẫn /admin/dashboard
-            .failureUrl("/admin-login?error=true")
+            .defaultSuccessUrl("/admin/profile", true)  // Sửa thành đường dẫn /admin/dashboard
+            .failureUrl("/admin/login?error=true")
             .permitAll()
         )
         .logout(logout -> logout
             .logoutUrl("/admin/logout")
-            .logoutSuccessUrl("/admin-login?logout=true")
+            .logoutSuccessUrl("/admin/login?logout=true")
             .permitAll()
         )
         .authenticationProvider(adminAuthenticationProvider());

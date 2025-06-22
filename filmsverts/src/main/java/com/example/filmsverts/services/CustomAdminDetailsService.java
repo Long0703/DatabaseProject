@@ -21,9 +21,9 @@ public class CustomAdminDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         // Chuyển username (thực ra là ID) thành Long
-        Long adminId;
+        Integer adminId;
         try {
-            adminId = Long.parseLong(username);
+            adminId = Integer.parseInt(username);
         } catch (NumberFormatException e) {
             throw new UsernameNotFoundException("ID quản trị viên không hợp lệ: " + username);
         }

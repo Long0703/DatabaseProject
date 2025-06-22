@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.example.filmsverts.daos.AdminsDAO;
 import com.example.filmsverts.daos.MovieDAO;
 import com.example.filmsverts.daos.UsersDAO;
 import com.example.filmsverts.entities.Users;
@@ -24,9 +23,6 @@ public class UserController {
 
     @Autowired
     private UsersDAO usersDAO;
-    
-    @Autowired
-    private AdminsDAO adminsDAO;
     
     @Autowired
     private MovieDAO movieDAO;
