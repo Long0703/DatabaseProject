@@ -29,7 +29,6 @@ public class UserController {
     private MovieDAO movieDAO;
     
     @Autowired
-    @Qualifier("userPasswordEncoder")
     private PasswordEncoder passwordEncoder;
 
     @GetMapping("/user/register")

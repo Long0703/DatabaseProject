@@ -12,23 +12,23 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "Rate")
+@Table(name = "\"Rate\"")
 @IdClass(RateId.class)
 public class Rate {
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "Username", nullable = false)
+    @JoinColumn(name = "\"Username\"", nullable = false)
     private Users user;
 
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "MovieID", nullable = false)
+    @JoinColumn(name = "\"MovieID\"", nullable = false)
     private Movie movie;
 
-    @Column(name = "Rate", nullable = false)
+    @Column(name = "\"Rate\"", nullable = false)
     private Integer rate;
 
-    @Column(name = "RateDate", nullable = false)
+    @Column(name = "\"RateDate\"", nullable = false)
     private LocalDate rateDate;
 
     // Constructors

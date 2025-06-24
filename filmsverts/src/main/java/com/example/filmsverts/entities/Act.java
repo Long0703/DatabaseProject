@@ -11,22 +11,22 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "Act")
+@Table(name = "\"Act\"")
 public class Act {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ActID")
+    @Column(name = "\"ActID\"")
     private Integer actId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ActorID", nullable = false)
+    @JoinColumn(name = "\"ActorID\"", nullable = false)
     private Actor actor;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "MovieID", nullable = false)
+    @JoinColumn(name = "\"MovieID\"", nullable = false)
     private Movie movie;
 
-    @Column(name = "Role", nullable = false, length = 128)
+    @Column(name = "\"Role\"", nullable = false, length = 128)
     private String role;
 
     // Constructors

@@ -1,13 +1,8 @@
 package com.example.filmsverts.configs;
 
-import java.util.List;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -30,32 +25,25 @@ public class WebSecurityConfig {
         this.userDetailsService = userDetailsService;
     }
 
-    // PASSWORD ENCODER CHO USER (BCRYPT)
     @Bean
-    public PasswordEncoder userPasswordEncoder() {
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    }
-    
-    // PASSWORD ENCODER CHO ADMIN (PLAIN TEXT)
-    @Bean
-    public PasswordEncoder adminPasswordEncoder() {
-        return new AdminPlainTextPasswordEncoder();
     }
     
     @Bean
     public SecurityFilterChain userSecurityFilterChain(HttpSecurity http) throws Exception {
         http
-        .securityMatcher("/user/**", "/process-user-login")
+        .securityMatcher("/user/**", "/user/login", "/user/register", "/process-user-login", "/user/profile")
         .csrf(csrf -> csrf.disable())
         .authorizeHttpRequests(auth -> auth
             .requestMatchers("/user/login", "/user/register", "/process-user-login", "/css/**", "/js/**").permitAll()
-            .requestMatchers("/user/**").hasRole("USER")
+            .requestMatchers("/user/**", "/user/profile").hasRole("USER")
             .anyRequest().authenticated()
         )
         .formLogin(login -> login
             .loginPage("/user/login")
             .loginProcessingUrl("/process-user-login")
-            .defaultSuccessUrl("/user/profile", true)
+            .defaultSuccessUrl("/user/profile", true)  // Sửa thành đường dẫn /user/profile thay vì /user-profile
             .failureUrl("/user/login?error=true")
             .permitAll()
         )
@@ -71,17 +59,18 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain adminSecurityFilterChain(HttpSecurity http) throws Exception {
         http
-        .securityMatcher("/admin/**", "/admin/login", "/process-admin-login", "/admin/profile")
+        .securityMatcher("/admin/**")
         .csrf(csrf -> csrf.disable())
         .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/admin/login", "/process-admin-login", "/css/**", "/js/**").permitAll()
-            .requestMatchers("/admin/**", "/admin/profile", "/admin/dashboard").hasRole("ADMIN")
+            .requestMatchers("/admin/login", "/css/**", "/js/**").permitAll()
+            .requestMatchers("/admin/**").hasRole("ADMIN")
             .anyRequest().authenticated()
         )
         .formLogin(login -> login
             .loginPage("/admin/login")
-            .loginProcessingUrl("/process-admin-login")
-            .defaultSuccessUrl("/admin/profile", true)  // Sửa thành đường dẫn /admin/dashboard
+            .usernameParameter("adminId")
+            .loginProcessingUrl("/admin/login")
+            .defaultSuccessUrl("/admin/profile", true)
             .failureUrl("/admin/login?error=true")
             .permitAll()
         )
@@ -94,45 +83,36 @@ public class WebSecurityConfig {
         return http.build();
     }
     
+    // Cấu hình cho các đường dẫn công khai
     @Bean
     public SecurityFilterChain publicSecurityFilterChain(HttpSecurity http) throws Exception {
         http
-            .securityMatcher("/", "/css/**", "/js/**", "/images/**")
+            .securityMatcher("/", "/css/**", "/js/**", "/images/**")  // Các đường dẫn công khai
             .authorizeHttpRequests(auth -> auth
                 .anyRequest().permitAll()
             )
             .csrf(csrf -> csrf.disable());
+
         return http.build();
     }
     
-    // ADMIN AUTHENTICATION PROVIDER - DÙNG PLAIN TEXT ENCODER
+ // AuthenticationProvider cho admin
     @SuppressWarnings("deprecation")
-	@Bean
+    @Bean
     public DaoAuthenticationProvider adminAuthenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(adminDetailsService);
-        provider.setPasswordEncoder(adminPasswordEncoder()); // PLAIN TEXT
+        provider.setPasswordEncoder(passwordEncoder());
         return provider;
     }
 
-    // USER AUTHENTICATION PROVIDER - DÙNG BCRYPT ENCODER
+    // AuthenticationProvider cho user
     @SuppressWarnings("deprecation")
-	@Bean
+    @Bean
     public DaoAuthenticationProvider userAuthenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(userDetailsService);
-        provider.setPasswordEncoder(userPasswordEncoder()); // BCRYPT
+        provider.setPasswordEncoder(passwordEncoder());
         return provider;
-    }
-
-    @Bean
-    public AuthenticationManager authenticationManager(
-            AuthenticationConfiguration authenticationConfiguration,
-            DaoAuthenticationProvider userAuthenticationProvider,
-            DaoAuthenticationProvider adminAuthenticationProvider
-    ) throws Exception {
-        return new ProviderManager(
-                List.of(userAuthenticationProvider, adminAuthenticationProvider)
-        );
     }
 }

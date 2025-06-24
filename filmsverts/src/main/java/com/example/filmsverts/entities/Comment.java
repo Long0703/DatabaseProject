@@ -13,28 +13,28 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "Comment")
+@Table(name = "\"Comment\"")
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "CommentID")
+    @Column(name = "\"CommentID\"")
     private Integer commentId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "Username", nullable = false)
+    @JoinColumn(name = "\"Username\"", nullable = false)
     private Users user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "MovieID", nullable = false)
+    @JoinColumn(name = "\"MovieID\"", nullable = false)
     private Movie movie;
 
-    @Column(name = "Comment", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "\"Comment\"", nullable = false, columnDefinition = "TEXT")
     private String comment;
 
-    @Column(name = "CommentDate", nullable = false)
+    @Column(name = "\"CommentDate\"", nullable = false)
     private LocalDate commentDate;
 
-    @Column(name = "Status", nullable = false)
+    @Column(name = "\"Status\"", nullable = false)
     private Boolean status;
 
     // Constructors
