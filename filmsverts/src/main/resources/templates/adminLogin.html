@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Đăng nhập Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.min.css">
+    <style>
+        body {
+            background: #f5f6fa;
+        }
+        .login-container {
+            max-width: 400px;
+            margin: 60px auto;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            padding: 32px 24px;
+        }
+        .login-title {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        .error-message {
+            color: #e74c3c;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="login-container">
+    <h2 class="login-title">Đăng nhập Admin</h2>
+    <form th:action="@{/admin/login}" method="post">
+        <label for="adminId">Admin ID</label>
+        <input type="text" id="adminId" name="adminId" required>
+        <label for="password">Mật khẩu</label>
+        <input type="password" id="password" name="password" required>
+        <button type="submit" class="button-primary" style="width:100%;">Đăng nhập</button>
+    </form>
+    <div style="min-height:32px; margin-top:10px;">
+        <div th:if="${error}" class="error-message">
+            <span th:text="${error}"></span>
+        </div>
+    </div>
+</div>
+</body>
+</html> 

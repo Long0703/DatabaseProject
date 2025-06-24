@@ -18,7 +18,11 @@ public class AdminsDAO {
 				+ " e where e.adminID =: adminID";
 		Query query = entityManager.createQuery(sql, Admins.class);
 		query.setParameter("adminID", adminID);
-		return (Admins) query.getSingleResult();
+		try {
+			return (Admins) query.getSingleResult();
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 	public Admins save(Admins admin) {
