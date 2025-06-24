@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title} ?: 'FilmsVert'">FilmsVert</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .navbar-brand img {
+            height: 40px;
+        }
+        .dropdown-menu {
+            min-width: 200px;
+        }
+    </style>
+</head>
+<body class="bg-light">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+        <div class="container-fluid">
+            <!-- Logo FilmsVert -->
+            <a class="navbar-brand" href="/">
+                <img src="https://png.pngtree.com/png-vector/20221015/ourmid/pngtree-movie-logo-vector-industry-digital-icon-vector-png-image_39728680.png" alt="FilmsVert Logo">
+                <span class="ms-2">FilmsVert</span>
+            </a>
+
+            <!-- Toggle button for mobile -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Navbar content (chỉ hiển thị cho user) -->
+            <div class="collapse navbar-collapse" id="navbarNav" th:if="${#authorization.expression('hasRole(''USER'')')}">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Menu
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="/user/profile">Hồ sơ</a></li>
+                            <li><a class="dropdown-item" href="/user/watchlist">Danh sách xem</a></li>
+                            <li><a class="dropdown-item" href="/user/ratings">Đánh giá của tôi</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="/user/logout">Đăng xuất</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Định nghĩa fragment content -->
+    <div th:fragment="content">
+        <div class="container mt-4">
+            <th:block th:replace="${pageContent}"></th:block> <!-- Chỗ này sẽ được thay bằng nội dung từ file con -->
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
