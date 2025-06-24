@@ -64,17 +64,18 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain adminSecurityFilterChain(HttpSecurity http) throws Exception {
         http
-        .securityMatcher("/admin/**", "/admin/login", "/process-admin-login", "/admin/profile")
+        .securityMatcher("/admin/**")
         .csrf(csrf -> csrf.disable())
         .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/admin/login", "/process-admin-login", "/css/**", "/js/**").permitAll()
-            .requestMatchers("/admin/**", "/admin/profile", "/admin/dashboard").hasRole("ADMIN")
+            .requestMatchers("/admin/login", "/css/**", "/js/**").permitAll()
+            .requestMatchers("/admin/**").hasRole("ADMIN")
             .anyRequest().authenticated()
         )
         .formLogin(login -> login
             .loginPage("/admin/login")
-            .loginProcessingUrl("/process-admin-login")
-            .defaultSuccessUrl("/admin/profile", true)  // Sửa thành đường dẫn /admin/dashboard
+            .usernameParameter("adminId")
+            .loginProcessingUrl("/admin/login")
+            .defaultSuccessUrl("/admin/profile", true)
             .failureUrl("/admin/login?error=true")
             .permitAll()
         )
@@ -118,17 +119,5 @@ public class WebSecurityConfig {
         provider.setUserDetailsService(userDetailsService);
         provider.setPasswordEncoder(passwordEncoder());
         return provider;
-    }
-
-    // Cấu hình Authenticationadmin
-    @Bean
-    public AuthenticationManager authenticationadmin(
-            AuthenticationConfiguration authenticationConfiguration,
-            DaoAuthenticationProvider userAuthenticationProvider,
-            DaoAuthenticationProvider adminAuthenticationProvider
-    ) throws Exception {
-        return new ProviderManager(
-                List.of(userAuthenticationProvider, adminAuthenticationProvider)
-        );
     }
 }
