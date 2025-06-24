@@ -35,7 +35,7 @@ public class CustomAdminDetailsService implements UserDetailsService {
 
         return User.builder()
                 .username(admin.getAdminID().toString()) // Dùng ID làm username
-                .password(admin.getPassword()) // Password đã mã hóa
+                .password(admin.getPassword()) 
                 .roles("ADMIN")
                 .build();
     }

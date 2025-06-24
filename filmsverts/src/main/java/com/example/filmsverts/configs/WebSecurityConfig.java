@@ -30,25 +30,32 @@ public class WebSecurityConfig {
         this.userDetailsService = userDetailsService;
     }
 
+    // PASSWORD ENCODER CHO USER (BCRYPT)
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    public PasswordEncoder userPasswordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+    
+    // PASSWORD ENCODER CHO ADMIN (PLAIN TEXT)
+    @Bean
+    public PasswordEncoder adminPasswordEncoder() {
+        return new AdminPlainTextPasswordEncoder();
     }
     
     @Bean
     public SecurityFilterChain userSecurityFilterChain(HttpSecurity http) throws Exception {
         http
-        .securityMatcher("/user/**", "/user/login", "/user/register", "/process-user-login", "/user/profile")
+        .securityMatcher("/user/**", "/process-user-login")
         .csrf(csrf -> csrf.disable())
         .authorizeHttpRequests(auth -> auth
             .requestMatchers("/user/login", "/user/register", "/process-user-login", "/css/**", "/js/**").permitAll()
-            .requestMatchers("/user/**", "/user/profile").hasRole("USER")
+            .requestMatchers("/user/**").hasRole("USER")
             .anyRequest().authenticated()
         )
         .formLogin(login -> login
             .loginPage("/user/login")
             .loginProcessingUrl("/process-user-login")
-            .defaultSuccessUrl("/user/profile", true)  // Sửa thành đường dẫn /user/profile thay vì /user-profile
+            .defaultSuccessUrl("/user/profile", true)
             .failureUrl("/user/login?error=true")
             .permitAll()
         )
@@ -87,42 +94,39 @@ public class WebSecurityConfig {
         return http.build();
     }
     
-    // Cấu hình cho các đường dẫn công khai
     @Bean
     public SecurityFilterChain publicSecurityFilterChain(HttpSecurity http) throws Exception {
         http
-            .securityMatcher("/", "/css/**", "/js/**", "/images/**")  // Các đường dẫn công khai
+            .securityMatcher("/", "/css/**", "/js/**", "/images/**")
             .authorizeHttpRequests(auth -> auth
                 .anyRequest().permitAll()
             )
             .csrf(csrf -> csrf.disable());
-
         return http.build();
     }
     
- // AuthenticationProvider cho admin
+    // ADMIN AUTHENTICATION PROVIDER - DÙNG PLAIN TEXT ENCODER
     @SuppressWarnings("deprecation")
-    @Bean
+	@Bean
     public DaoAuthenticationProvider adminAuthenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(adminDetailsService);
-        provider.setPasswordEncoder(passwordEncoder());
+        provider.setPasswordEncoder(adminPasswordEncoder()); // PLAIN TEXT
         return provider;
     }
 
-    // AuthenticationProvider cho user
+    // USER AUTHENTICATION PROVIDER - DÙNG BCRYPT ENCODER
     @SuppressWarnings("deprecation")
-    @Bean
+	@Bean
     public DaoAuthenticationProvider userAuthenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(userDetailsService);
-        provider.setPasswordEncoder(passwordEncoder());
+        provider.setPasswordEncoder(userPasswordEncoder()); // BCRYPT
         return provider;
     }
 
-    // Cấu hình Authenticationadmin
     @Bean
-    public AuthenticationManager authenticationadmin(
+    public AuthenticationManager authenticationManager(
             AuthenticationConfiguration authenticationConfiguration,
             DaoAuthenticationProvider userAuthenticationProvider,
             DaoAuthenticationProvider adminAuthenticationProvider

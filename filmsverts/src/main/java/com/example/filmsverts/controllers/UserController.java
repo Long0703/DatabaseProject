@@ -3,6 +3,7 @@ package com.example.filmsverts.controllers;
 import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -28,6 +29,7 @@ public class UserController {
     private MovieDAO movieDAO;
     
     @Autowired
+    @Qualifier("userPasswordEncoder")
     private PasswordEncoder passwordEncoder;
 
     @GetMapping("/user/register")
